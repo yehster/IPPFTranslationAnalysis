@@ -51,9 +51,9 @@ public class IPPFTranslationAnalysis {
 //        XCell oCell = null;
 
         System.out.println("Opening OpenEMR Translations");
-        openemr_dutch = openCalc(xContext,"file:///c:\\Users\\yehster\\Downloads\\openemr_language_table.xlsx");  
+        openemr_dutch = openCalc(xContext,"file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\openemr_language_table.xlsx");  
         System.out.println("Opening IPPF Spanish Translations");
-        ippf_spanish = openCalc(xContext,"file:///c:\\Users\\yehster\\Downloads\\OEMR_SpanishTranslation_MASTER_CURRENTXG.xls");  
+        ippf_spanish = openCalc(xContext,"file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_SpanishTranslation_MASTER_CURRENTXG.xls");  
     }
 
     
