@@ -18,11 +18,11 @@ import com.sun.star.lang.XMultiComponentFactory;
 
 import com.sun.star.uno.XComponentContext;
 
-
 import com.sun.star.sheet.XCellRangeAddressable;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheets;
 import com.sun.star.sheet.XSpreadsheetDocument;
+
 
 /**
  *
@@ -54,6 +54,26 @@ public class IPPFTranslationAnalysis {
         openemr_dutch = openCalc(xContext,"file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\openemr_language_table.xlsx");  
         System.out.println("Opening IPPF Spanish Translations");
         ippf_spanish = openCalc(xContext,"file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_SpanishTranslation_MASTER_CURRENTXG.xls");  
+        String spanish_first_sheet=((ippf_spanish.getSheets().getElementNames())[0]);
+        String dutch_first_sheet=((openemr_dutch.getSheets().getElementNames())[0]);
+        XSpreadsheet spanish_sheet=null;
+        XSpreadsheet dutch_sheet=null;
+        try
+        {
+            spanish_sheet=UnoRuntime.queryInterface(
+                XSpreadsheet.class,
+                ippf_spanish.getSheets().getByName(spanish_first_sheet));
+            dutch_sheet=UnoRuntime.queryInterface(
+                XSpreadsheet.class,
+                openemr_dutch.getSheets().getByName(dutch_first_sheet));
+
+            System.out.println(spanish_sheet.getCellByPosition(0, 9).getValue());
+            System.out.println(dutch_sheet.getCellByPosition(0, 9).getValue());            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     
