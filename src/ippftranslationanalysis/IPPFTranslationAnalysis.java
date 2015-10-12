@@ -23,6 +23,7 @@ import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheets;
 import com.sun.star.sheet.XSpreadsheetDocument;
 
+import com.sun.star.frame.XStorable;
 
 /**
  *
@@ -52,8 +53,10 @@ public class IPPFTranslationAnalysis {
 
         System.out.println("Opening OpenEMR Translations");
         openemr_dutch = openCalc(xContext,"file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\openemr_language_table.xlsx");  
+        String spanish_file_name="file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_SpanishTranslation_MASTER_CURRENTXG.xls";
+        spanish_file_name="file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_SpanishTranslation_DEDUPE.xls";
         System.out.println("Opening IPPF Spanish Translations");
-        ippf_spanish = openCalc(xContext,"file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_SpanishTranslation_MASTER_CURRENTXG.xls");  
+        ippf_spanish = openCalc(xContext,spanish_file_name);  
         String spanish_first_sheet=((ippf_spanish.getSheets().getElementNames())[0]);
         String dutch_first_sheet=((openemr_dutch.getSheets().getElementNames())[0]);
         XSpreadsheet spanish_sheet=null;
@@ -67,15 +70,19 @@ public class IPPFTranslationAnalysis {
                 XSpreadsheet.class,
                 openemr_dutch.getSheets().getByName(dutch_first_sheet));
 
-            System.out.println(spanish_sheet.getCellByPosition(0, 9).getValue());
-            System.out.println(dutch_sheet.getCellByPosition(0, 9).getValue());            
+            SpreadsheetScannerIPPF scanner = new SpreadsheetScannerIPPF();
+           scanner.scan(true,spanish_sheet,1,1,2,5);
+            
+//           scanner.scan(false,dutch_sheet,5,1,5,0);
+           
+           System.out.println("done!");
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
     }
-
+   
     
     public static XSpreadsheetDocument openCalc(XComponentContext xContext,String url)
     {
