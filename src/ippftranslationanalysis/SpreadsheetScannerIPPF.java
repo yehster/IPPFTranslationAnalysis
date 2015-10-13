@@ -30,6 +30,7 @@ public class SpreadsheetScannerIPPF {
     public void scan(boolean initialize, XSpreadsheet sheet,int StartingRow,int EnglishColumn,int ForeignColumn, int NotesColumn) throws Exception
     {
         int row=StartingRow;
+        Boolean removeDups=false;
         Boolean cont=true;
         TranslationData curTranslationData=null;
         XColumnRowRange table=null;
@@ -64,7 +65,7 @@ public class SpreadsheetScannerIPPF {
                 {
                     if(English_Cell.getType().equals(com.sun.star.table.CellContentType.EMPTY))
                     {
-                        if(curCell.getValue()<5000)
+                        if(false && (curCell.getValue()<5000)) // Don't remove the blank row and renumber
                         {
                             System.out.println("Removing Empty content at:"+curCell.getValue());
                             table.getRows().removeByIndex(row, 1);
@@ -97,16 +98,20 @@ public class SpreadsheetScannerIPPF {
                         if(!Language_Cell.getType().equals(com.sun.star.table.CellContentType.EMPTY))
                                 {
                                     duplicates++;
-                                    System.out.println("Duplicate constant:"+":"+Notes_Cell.getFormula()+":"+row+":"+EnglishData+":"+foreignData.equals(existingData.getForeign())+":"+foreignData+"||"+existingData.toString());
-                                    XCell prevForeign =sheet.getCellByPosition(ForeignColumn,existingData.getID());
-                                    prevForeign.setFormula(foreignData);
-                                    XCell prevNote = sheet.getCellByPosition(NotesColumn,existingData.getID());
-                                    prevNote.setFormula(prevNote.getFormula() + "|"+Notes_Cell.getFormula());
-                                    table.getRows().removeByIndex(row, 1);
-                                    XCell counterCell=sheet.getCellByPosition(0,row);
-                                    counterCell.setFormula("=A"+Integer.toString(row)+"+1");
-                                    row--;
-                                    table = UnoRuntime.queryInterface(XColumnRowRange.class, sheet.getSpreadsheet());                        
+                                    System.out.println("Duplicate constant"+":"+Notes_Cell.getFormula()+":"+row+":"+EnglishData+":"+foreignData.equals(existingData.getForeign())+":"+foreignData+"||"+existingData.toString());
+                                    if(removeDups)
+                                    {
+                                        XCell prevForeign =sheet.getCellByPosition(ForeignColumn,existingData.getID());
+                                        prevForeign.setFormula(foreignData);
+                                        XCell prevNote = sheet.getCellByPosition(NotesColumn,existingData.getID());
+                                        prevNote.setFormula(prevNote.getFormula() + "|"+Notes_Cell.getFormula());
+                                        table.getRows().removeByIndex(row, 1);
+                                        XCell counterCell=sheet.getCellByPosition(0,row);
+                                        counterCell.setFormula("=A"+Integer.toString(row)+"+1");
+                                        row--;
+                                        table = UnoRuntime.queryInterface(XColumnRowRange.class, sheet.getSpreadsheet());                        
+                                        
+                                    }
                                     
                                 }
                     }
