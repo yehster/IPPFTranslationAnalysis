@@ -27,7 +27,7 @@ public class SpreadsheetScannerIPPF {
     protected HashMap<String,TranslationData> mMappedData = new HashMap();
     protected ArrayList<TranslationData> mDataList = new ArrayList();
     
-    public void scan(boolean initialize, XSpreadsheet sheet,int StartingRow,int EnglishColumn,int ForeignColumn, int NotesColumn) throws Exception
+    public void scan(boolean initialize, XSpreadsheet sheet,int StartingRow,int EnglishColumn,int ForeignColumn, int NotesColumn,XSpreadsheet update, int updateColumn) throws Exception
     {
         int row=StartingRow;
         Boolean removeDups=false;
@@ -122,12 +122,19 @@ public class SpreadsheetScannerIPPF {
                     curTranslationData=mMappedData.get(EnglishData);
                     if(curTranslationData==null)
                     {
-                        System.out.println(foreignData +"|     |" +EnglishData+" has no match");
+//                        System.out.println(foreignData +"|     |" +EnglishData+" has no match");
                         unmatched++;
                     }
                     else
                     {
                         curTranslationData.setForeign(foreignData);
+                        if(update!=null)
+                        {
+                            XCell updateEnglish=update.getCellByPosition(1, curTranslationData.getID());
+                            System.out.println(updateEnglish.getFormula()+":"+EnglishData);
+                            XCell updateForeign=update.getCellByPosition(updateColumn,curTranslationData.getID());
+                            updateForeign.setFormula(foreignData);
+                        }
 //                        System.out.println(curTranslationData.toString());
                     }
                     
@@ -144,4 +151,5 @@ public class SpreadsheetScannerIPPF {
         System.out.println("Duplicates :"+Integer.toString(duplicates));
         System.out.println("Unmatched :"+Integer.toString(unmatched));
     }
+    
 }

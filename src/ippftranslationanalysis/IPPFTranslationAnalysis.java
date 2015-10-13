@@ -53,7 +53,7 @@ public class IPPFTranslationAnalysis {
 
         System.out.println("Opening OpenEMR Translations");
         openemr_dutch = openCalc(xContext,"file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\openemr_language_table.xlsx");  
-        String spanish_file_name="file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_SpanishTranslation_MASTER_CURRENTXG.xls";
+        String spanish_file_name="file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_Translations_MASTER_CURRENTXG.xls";
 //        spanish_file_name="file:///c:\\Users\\yehster\\java\\IPPFTranslationAnalysis\\data\\OEMR_SpanishTranslation_DEDUPE2.xls";
         System.out.println("Opening IPPF Spanish Translations");
         ippf_spanish = openCalc(xContext,spanish_file_name);  
@@ -71,9 +71,10 @@ public class IPPFTranslationAnalysis {
                 openemr_dutch.getSheets().getByName(dutch_first_sheet));
 
             SpreadsheetScannerIPPF scanner = new SpreadsheetScannerIPPF();
-           scanner.scan(true,spanish_sheet,1,1,2,5);
+           scanner.scan(true,spanish_sheet,1,1,2,5,null,0);
             
-//           scanner.scan(false,dutch_sheet,5,1,5,0);
+           scanner.scan(false,dutch_sheet,5,1,5,0,spanish_sheet,2);
+//           scanner.scan(false,dutch_sheet,5,1,7,0,spanish_sheet,8);
            
            System.out.println("done!");
         }
